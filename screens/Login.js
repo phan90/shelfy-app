@@ -2,6 +2,7 @@ import React from 'react';
 import { ScrollView, StyleSheet, Image, Text, Button } from 'react-native';
 import Expo from 'expo';
 import {androidClientId, iosClientId} from '../config';
+import * as firebase from 'firebase'
 
 export default class Login extends React.Component {
     async signInWithGoogleAsync() {
@@ -13,7 +14,8 @@ export default class Login extends React.Component {
             });
             if (result.type === 'success') {
                 this.props.navigation.navigate('Main')
-                return result.accessToken;
+                const credential = firebase.auth.GoogleAuthProvider.credential(result.idToken, result.accessToken);
+                firebase.auth().signInAndRetrieveDataWithCredential(credential)
             } else {
                 return { cancelled: true };
             }

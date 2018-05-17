@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, View, TouchableOpacity, Text, ScrollView } from 'react-native';
 import { FileSystem, FaceDetector, MediaLibrary, Permissions } from 'expo';
+import * as firebase from "firebase";
 
 const pictureSize = 150;
 
@@ -27,9 +28,9 @@ export default class GalleryScreen extends React.Component {
         });
     }
 
-    componentWillUnmount() {
-        this._mounted = false;
-    }
+    // componentWillUnmount() {
+    //     this._mounted = false;
+    // }
 
     getImageDimensions = ({ width, height }) => {
         if (width > height) {
@@ -79,6 +80,15 @@ export default class GalleryScreen extends React.Component {
             alert('No photos to save!');
         }
     };
+
+    sendToFirebase = async () => {
+        const {photos} = this.state;
+        if (photos.length > 0) {
+
+        } else {
+            alert('No photos to send!')
+        }
+    }
 
     detectFaces = () => this.state.photos.forEach(this.detectFace);
 
@@ -137,6 +147,9 @@ export default class GalleryScreen extends React.Component {
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button} onPress={this.saveToGallery}>
                         <Text>Save to gallery</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button} onPress={this.sendToFirebase}>
+                        <Text>Send to firebase</Text>
                     </TouchableOpacity>
                 </View>
                 <ScrollView contentComponentStyle={{ flex: 1 }}>

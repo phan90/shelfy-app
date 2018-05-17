@@ -115,6 +115,8 @@ export default class CameraScreen extends React.Component {
   takePicture = async function () {
     if (this.camera) {
       this.camera.takePictureAsync().then(data => {
+        // console.log(data)
+        // console.log(`${FileSystem.documentDirectory}photos/Photo_${this.state.photoId}.jpg`)
         FileSystem.moveAsync({
           from: data.uri,
           to: `${FileSystem.documentDirectory}photos/Photo_${this.state.photoId}.jpg`,

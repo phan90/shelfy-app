@@ -7,6 +7,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import CameraScreen from '../screens/CameraScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import CameraScreen2 from '../screens/CameraScreen2';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -40,6 +41,20 @@ CameraStack.navigationOptions = {
   ),
 };
 
+const CameraStack2 = createStackNavigator({
+  Camera: CameraScreen2,
+});
+
+CameraStack2.navigationOptions = {
+  tabBarLabel: 'Camera',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? `ios-camera${focused ? '' : '-outline'}` : 'md-camera'}
+    />
+  ),
+};
+
 const SettingsStack = createStackNavigator({
   Settings: SettingsScreen,
 });
@@ -58,4 +73,5 @@ export default createBottomTabNavigator({
   HomeStack,
   CameraStack,
   SettingsStack,
+  CameraStack2
 });

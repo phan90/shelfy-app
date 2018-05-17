@@ -3,12 +3,26 @@ import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import RootNavigation from './navigation/RootNavigation';
+import * as firebase from 'firebase'
+import ApiKeys from './config/ApiKeys'
 
 export default class App extends React.Component {
-  state = {
+  constructor(props) {
+    super(props);
+    this.state = {
     isLoadingComplete: false,
   };
 
+  if (!firebase.apps.length) {
+    firebase.initializeApp(ApiKeys.firebaseConfig)
+    firebase.auth().onAuthStateChanged((user) => {
+      console.log(user)
+      if (user != null) {
+        console.log("We are authenticated now!");
+      }
+    });
+  }
+}
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
