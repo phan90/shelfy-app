@@ -1,49 +1,16 @@
-// import React from 'react';
-// import { Button, Image, View } from 'react-native';
-// import { ImagePicker } from 'expo';
-
-// export default class ImagePicker2 extends React.Component {
-//   state = {
-//     image: null,
-//   };
-
-//   render() {
-//     let { image } = this.state;
-
-//     return (
-//       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-//         <Button
-//           title="Pick an image from camera roll"
-//           onPress={this._pickImage}
-//         />
-//         {image &&
-//           <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-//       </View>
-//     );
-//   }
-
-//   _pickImage = async () => {
-//     console.log('image picker launching')
-//     let result = await ImagePicker.launchImageLibraryAsync({
-//       allowsEditing: true,
-//       aspect: [4, 3],
-//     });
-
-//     console.log(result, 'jnskjdnasldnas');
-
-//     if (!result.cancelled) {
-//       this.setState({ image: result.uri });
-//     }
-//   };
-// }
-
-
-
-
 import React from 'react';
 import { Button, Image, View, Alert, StyleSheet } from 'react-native';
 import { ImagePicker } from 'expo';
 import * as firebase from 'firebase'
+import axios from 'axios';
+import 'firebase/firestore';
+import ApiKeys from '../config/ApiKeys'
+
+const firebaseApp = firebase.initializeApp(ApiKeys.firebaseConfig)
+const auth = firebaseApp.auth();
+const db = firebase.firestore()
+const settings = { timestampsInSnapshots: true };
+db.settings(settings);
 
 export default class Camera extends React.Component {
   state = {
@@ -64,12 +31,14 @@ export default class Camera extends React.Component {
   }
 
   _pickImage = async () => {
-    console.log(firebase.auth().currentUser, 'hello jac')
+    console.log(firebase.auth().currentUser.uid, 'hello jac')
     let result = await ImagePicker.launchCameraAsync()
     if (!result.cancelled) {
-      this.uploadImage(result.uri, new Date().getTime())
+      this.uploadImage(result.uri, new Date().getTime(), firebase.auth().currentUser.uid)
         .then(() => {
-          Alert.alert('Success');
+          // Alert.alert('Success');
+          console.log('success')
+          this.fetchData()
         })
         .catch((error) => {
           Alert.alert('Upload failed')
@@ -77,13 +46,25 @@ export default class Camera extends React.Component {
     }
   }
 
-  uploadImage = async (uri, imageName) => {
+  fetchData = async () => {
+    console.log('jkbfjkd sflslkndslk')
+    db.collection('response').doc('sSVMJ1jbKUnEb2XlfU8W').get()
+      .then(doc => {
+        if (!doc.exists) {
+          console.log('No such document!');
+        } else {
+          console.log('Document data:', doc.data().image);
+        }
+      })
+      .catch(err => {
+        console.log('Error getting document', err);
+      });
+  }
+
+  uploadImage = async (uri, imageName, userID) => {
     const response = await fetch(uri);
     const blob = await response.blob();
-    // console.log(blob, 'blob')
-
-    const ref = firebase.storage().ref().child('images/' + imageName)
-    // console.log(ref, 'ref')
+    const ref = firebase.storage().ref().child(`images/${userID}/` + imageName)
     return ref.put(blob)
   }
 }

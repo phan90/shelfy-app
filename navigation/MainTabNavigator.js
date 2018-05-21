@@ -2,12 +2,11 @@ import React from 'react';
 import { Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
-
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import CameraScreen from '../screens/CameraScreen';
 import SettingsScreen from '../screens/SettingsScreen';
-import CameraScreen2 from '../screens/CameraScreen2';
+import UserProfile from '../screens/UserProfile';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -41,16 +40,16 @@ CameraStack.navigationOptions = {
   ),
 };
 
-const CameraStack2 = createStackNavigator({
-  Camera: CameraScreen2,
+const UserProfileStack = createStackNavigator({
+  Profile: UserProfile,
 });
 
-CameraStack2.navigationOptions = {
-  tabBarLabel: 'Camera',
+UserProfileStack.navigationOptions = {
+  tabBarLabel: 'Profile',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `ios-camera${focused ? '' : '-outline'}` : 'md-camera'}
+      name={Platform.OS === 'ios' ? `ios-contact${focused ? '' : '-outline'}` : 'md-contact'}
     />
   ),
 };
@@ -73,5 +72,5 @@ export default createBottomTabNavigator({
   HomeStack,
   CameraStack,
   SettingsStack,
-  CameraStack2
+  UserProfileStack
 });

@@ -13,7 +13,7 @@ const AppNavigator = createSwitchNavigator({
 }, 
 },
 {
-  navigationOptions: () => ({
+  navigationOptions: (screenProps) => ({
     headerTitleStyle: {
       fontWeight: 'normal',
     }

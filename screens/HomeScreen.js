@@ -8,6 +8,8 @@ import {
   View,
 } from 'react-native';
 import { MonoText } from '../components/StyledText';
+import * as firebase from 'firebase'
+
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -21,16 +23,12 @@ export default class HomeScreen extends React.Component {
           <Image
             source={require('../assets/images/shelfie-logo.png')}
             style={styles.logo} />
-
+          <Image
+            style={{ width: 66, height: 58 }}
+            source={{ uri: firebase.auth().currentUser.photoURL }}
+          />
+          <Text>Welcome back {firebase.auth().currentUser.displayName}!</Text>
         </ScrollView>
-
-        <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>This is a tab bar. You can edit it in:</Text>
-
-          <View style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-            <MonoText style={styles.codeHighlightText}>navigation/MainTabNavigator.js</MonoText>
-          </View>
-        </View>
       </View>
     );
   }

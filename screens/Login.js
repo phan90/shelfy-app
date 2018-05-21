@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Image, Text, Button } from 'react-native';
+import { ScrollView, StyleSheet, Image, Text, Button, TouchableOpacity } from 'react-native';
 import Expo from 'expo';
 import {androidClientId, iosClientId} from '../config';
 import * as firebase from 'firebase'
@@ -30,14 +30,12 @@ export default class Login extends React.Component {
                 <Image
                     source={require('../assets/images/shelfie-logo.png')}
                     style={styles.logo} />
-                {/* <Image onPress={this.signInWithGoogleAsync.bind(this)}
-                    source={require('../assets/images/google.png')}
-                    style={styles.welcomeImage}
-                /> */}
-                <Button onPress={this.signInWithGoogleAsync.bind(this)}
-                    title="Google Sign In"
-                    style={styles.welcomeImage}
-                />
+                <TouchableOpacity onPress={this.signInWithGoogleAsync.bind(this)}>
+                    <Image
+                        source={require('../assets/images/google.png')}
+                        style={styles.logo}
+                    />
+                </TouchableOpacity>
             </ScrollView>
         );
 
