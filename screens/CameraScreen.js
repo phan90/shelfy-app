@@ -1,10 +1,11 @@
 import React from 'react';
-import { Button, Image, View, Alert, StyleSheet } from 'react-native';
-import { ImagePicker } from 'expo';
+import { Alert, StyleSheet } from 'react-native';
+import { ImagePicker, FileSystem, Permissions } from 'expo';
 import * as firebase from 'firebase'
 import 'firebase/firestore';
 import ApiKeys from '../config/ApiKeys'
 import { Header } from 'react-native-elements'
+import ImageScreen from './ImageScreen'
 
 const firebaseApp = firebase.initializeApp(ApiKeys.firebaseConfig)
 const auth = firebaseApp.auth();
@@ -13,28 +14,39 @@ const settings = { timestampsInSnapshots: true };
 db.settings(settings);
 
 export default class CameraScreen extends React.Component {
-  state = {
-    image: null,
-  };
 
+  componentDidMount() {
+    FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'photos').catch(e => {
+      console.log(e, 'Directory exists');
+    });
+  }
+  
   render() {
-    let { image } = this.state;
-
     return (
       <Header
         rightComponent={{ icon: 'camera', color: '#fff', onPress: () => this.pickImage() }}
-      /> 
+      />
     );
   }
 
+  askPermissionsAsync = async () => {
+    await Permissions.askAsync(Permissions.CAMERA);
+    await Permissions.askAsync(Permissions.CAMERA_ROLL);
+  };
+
   pickImage = async () => {
-    // console.log(firebase.auth().currentUser.uid, 'hello jac')
+    await this.askPermissionsAsync();
     let result = await ImagePicker.launchCameraAsync()
     if (!result.cancelled) {
       this.uploadImage(result.uri, new Date().getTime(), firebase.auth().currentUser.uid)
         .then(() => {
           console.log('success')
           this.fetchData()
+          FileSystem.moveAsync({
+            from: result.uri,
+            to: `${FileSystem.documentDirectory}photos/Photo_1.jpg`
+          })
+          this.props.navigate('Camera')
         })
         .catch((error) => {
           Alert.alert('Upload failed')
@@ -43,7 +55,7 @@ export default class CameraScreen extends React.Component {
   }
 
   fetchData = async () => {
-    db.collection('response').doc('sSVMJ1jbKUnEb2XlfU8W').get()
+    db.collection('test').doc('sSVMJ1jbKUnEb2XlfU8W').get()
       .then(doc => {
         if (!doc.exists) {
           console.log('No such document!');

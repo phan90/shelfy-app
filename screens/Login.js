@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Image, Text, Button, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Image, TouchableOpacity, View } from 'react-native';
 import Expo from 'expo';
 import {androidClientId, iosClientId} from '../config';
 import * as firebase from 'firebase'
