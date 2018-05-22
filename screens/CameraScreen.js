@@ -16,7 +16,8 @@ db.settings(settings);
 export default class CameraScreen extends React.Component {
 
   componentDidMount() {
-    FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'photos').catch(e => {
+    FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'photos')
+    .catch(e => {
       console.log(e, 'Directory exists');
     });
   }
