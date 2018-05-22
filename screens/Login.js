@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Image, Text, Button, TouchableOpacity } from 'react-native';
+import { ScrollView, StyleSheet, Image, Text, Button, TouchableOpacity, View } from 'react-native';
 import Expo from 'expo';
 import {androidClientId, iosClientId} from '../config';
 import * as firebase from 'firebase'
@@ -26,7 +26,8 @@ export default class Login extends React.Component {
 
     render() {
         return (
-            <ScrollView style={styles.container}>
+            <View style={styles.container} >
+            <ScrollView contentContainerStyle={styles.contentContainer}>
                 <Image
                     source={require('../assets/images/shelfie-logo.png')}
                     style={styles.logo} />
@@ -37,6 +38,7 @@ export default class Login extends React.Component {
                     />
                 </TouchableOpacity>
             </ScrollView>
+            </View>
         );
 
 
@@ -49,12 +51,16 @@ const styles = StyleSheet.create({
         paddingTop: 15,
         backgroundColor: '#fff',
     },
+    contentContainer: {
+        paddingTop: 60,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     logo: {
         width: 250,
         height: 150, 
         resizeMode: 'contain', 
-        justifyContent: 'center',
-        alignItems: 'center'
+     
 
     }
 });

@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import { MonoText } from '../components/StyledText';
 import * as firebase from 'firebase'
+import { Header, Avatar } from 'react-native-elements'
+import CameraScreen from './CameraScreen'
 
 
 export default class HomeScreen extends React.Component {
@@ -20,15 +22,17 @@ export default class HomeScreen extends React.Component {
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <Image
-            source={require('../assets/images/shelfie-logo.png')}
-            style={styles.logo} />
-          <Image
-            style={{ width: 66, height: 58 }}
+          <Avatar
+            size="large"
+            rounded
             source={{ uri: firebase.auth().currentUser.photoURL }}
+            onPress={() => console.log("Works!")}
+            activeOpacity={0.7}
           />
           <Text>Welcome back {firebase.auth().currentUser.displayName}!</Text>
         </ScrollView>
+        < CameraScreen
+        />
       </View>
     );
   }
@@ -42,6 +46,8 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingTop: 30,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   codeHighlightText: {
     color: 'rgba(96,100,109, 0.8)',
