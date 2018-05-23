@@ -15,12 +15,12 @@ db.settings(settings);
 
 export default class CameraScreen extends React.Component {
 
-  componentDidMount() {
-    FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'photos')
-    .catch(e => {
-      console.log(e, 'Directory exists');
-    });
-  }
+  // componentDidMount() {
+  //   FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'photos')
+  //   .catch(e => {
+  //     console.log(e, 'Directory exists');
+  //   });
+  // }
   
   render() {
     return (
@@ -42,12 +42,13 @@ export default class CameraScreen extends React.Component {
       this.uploadImage(result.uri, new Date().getTime(), firebase.auth().currentUser.uid)
         .then(() => {
           console.log('success')
-          this.fetchData()
-          FileSystem.moveAsync({
-            from: result.uri,
-            to: `${FileSystem.documentDirectory}photos/Photo_1.jpg`
-          })
-          this.props.navigate('Camera')
+          // this.fetchData()
+          // this.getImage()
+          // FileSystem.moveAsync({
+          //   from: result.uri,
+          //   to: `${FileSystem.documentDirectory}photos/Photo_1.jpg`
+          // })
+          this.props.navigate('Image')
         })
         .catch((error) => {
           Alert.alert('Upload failed')
@@ -55,19 +56,32 @@ export default class CameraScreen extends React.Component {
     }
   }
 
-  fetchData = async () => {
-    db.collection('test').doc('sSVMJ1jbKUnEb2XlfU8W').get()
-      .then(doc => {
-        if (!doc.exists) {
-          console.log('No such document!');
-        } else {
-          console.log('Document data:', doc.data());
-        }
-      })
-      .catch(err => {
-        console.log('Error getting document', err);
-      });
-  }
+  // fetchData = async () => {
+  //   db.collection('test').doc('sSVMJ1jbKUnEb2XlfU8W').get()
+  //     .then(doc => {
+  //       if (!doc.exists) {
+  //         console.log('No such document!');
+  //       } else {
+  //         console.log('Document data:', doc.data());
+  //       }
+  //     })
+  //     .catch(err => {
+  //       console.log('Error getting document', err);
+  //     });
+  // }
+
+  // getImage = async () => {
+  //   // const image = firebase.storage().ref().child('test/sSVMJ1jbKUnEb2XlfU8W')
+  //   // console.log(image)
+  //   // Create a reference to the file we want to download
+  //   const starsRef = firebase.storage().ref().child('test/sSVMJ1jbKUnEb2XlfU8W');
+  //   const image = starsRef.getDownloadURL().then(url => {
+  //     console.log(url)
+  //   })
+  // //  console.log(image)
+  // }
+
+
 
   uploadImage = async (uri, imageName, userID) => {
     const response = await fetch(uri);

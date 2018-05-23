@@ -1,11 +1,11 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Image, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Image, TouchableOpacity, View, Text, Linking } from 'react-native';
 import Expo from 'expo';
-import {androidClientId, iosClientId} from '../config';
+import { androidClientId, iosClientId } from '../config';
 import * as firebase from 'firebase'
 
 export default class Login extends React.Component {
-    async signInWithGoogleAsync() {
+    signInWithGoogleAsync = async () => {
         try {
             const result = await Expo.Google.logInAsync({
                 androidClientId,
@@ -27,17 +27,20 @@ export default class Login extends React.Component {
     render() {
         return (
             <View style={styles.container} >
-            <ScrollView contentContainerStyle={styles.contentContainer}>
-                <Image
-                    source={require('../assets/images/shelfie-logo.png')}
-                    style={styles.logo} />
-                <TouchableOpacity onPress={this.signInWithGoogleAsync.bind(this)}>
                     <Image
-                        source={require('../assets/images/google.png')}
-                        style={styles.logo}
-                    />
-                </TouchableOpacity>
-            </ScrollView>
+                        source={require('../assets/images/shelfy-logo.png')}
+                        style={styles.logo} />
+                    <TouchableOpacity onPress={this.signInWithGoogleAsync}>
+                        <Image
+                            source={require('../assets/images/google.png')}
+                            style={styles.google}
+                        />
+                    </TouchableOpacity>
+                    <Text style={styles.text}>You will need to have a Google Books account to use this app, please sign up 
+                        <Text style={{ color: 'blue' }}
+                            onPress={() => Linking.openURL('https://books.google.co.uk')}> here
+                        </Text>
+                    </Text>
             </View>
         );
 
@@ -48,19 +51,28 @@ export default class Login extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 15,
+        padding: 25,
         backgroundColor: '#fff',
-    },
-    contentContainer: {
-        paddingTop: 60,
-        justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingTop: 80,
     },
     logo: {
         width: 250,
-        height: 150, 
-        resizeMode: 'contain', 
-     
-
-    }
+        height: 150,
+        resizeMode: 'contain',
+    }, 
+    google: {
+        width: 250,
+        height: 150,
+        resizeMode: 'contain',
+    }, 
+    text: {
+        width: '100%',
+        height: 140,
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        bottom: 0, 
+        fontSize: 15
+    },
 });
