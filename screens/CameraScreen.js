@@ -43,7 +43,6 @@ export default class CameraScreen extends React.Component {
         .then(() => {
           console.log('success')
           // this.fetchData()
-          // this.getImage()
           // FileSystem.moveAsync({
           //   from: result.uri,
           //   to: `${FileSystem.documentDirectory}photos/Photo_1.jpg`
@@ -69,19 +68,6 @@ export default class CameraScreen extends React.Component {
   //       console.log('Error getting document', err);
   //     });
   // }
-
-  // getImage = async () => {
-  //   // const image = firebase.storage().ref().child('test/sSVMJ1jbKUnEb2XlfU8W')
-  //   // console.log(image)
-  //   // Create a reference to the file we want to download
-  //   const starsRef = firebase.storage().ref().child('test/sSVMJ1jbKUnEb2XlfU8W');
-  //   const image = starsRef.getDownloadURL().then(url => {
-  //     console.log(url)
-  //   })
-  // //  console.log(image)
-  // }
-
-
 
   uploadImage = async (uri, imageName, userID) => {
     const response = await fetch(uri);

@@ -3,14 +3,14 @@ import { View, StyleSheet, Text, Image } from 'react-native';
 import { FileSystem } from 'expo';
 import * as firebase from 'firebase'
 import 'firebase/firestore';
-import ApiKeys from '../config/ApiKeys'
-import { Header } from 'react-native-elements'
+import ApiKeys from '../config/ApiKeys';
+import { Header } from 'react-native-elements';
+import { Bars } from 'react-native-loader';
 
 export default class ImageScreen extends React.Component {
     state = {
         image: '',
     };
-
     // componentDidMount() {
     //     FileSystem.readDirectoryAsync(FileSystem.documentDirectory + 'photos').then(photos => {
     //         this.setState({
@@ -18,49 +18,67 @@ export default class ImageScreen extends React.Component {
     //         });
     //     });
     // }
+    componentDidMount() {
+        firebase.firestore().collection('response').doc(firebase.auth().currentUser.uid).set({ image: '' })
 
-    componentDidMount () {
-        firebase.firestore().collection('test').doc('sSVMJ1jbKUnEb2XlfU8W').onSnapshot(doc => {
-            console.log(`Recieved doc snapshot: ${doc.data().image}`)
-            this.setState({
-                image: doc.data().image
-            })
+        firebase.firestore().collection('response').doc(firebase.auth().currentUser.uid).onSnapshot(doc => {
+            // console.log(`Recieved doc snapshot: ${doc.data().image}`)
+            console.log(doc.data().image, 'doc data')
+            if (doc.data().image !== '') {
+                this.setState({
+                    image: doc.data().image
+                })
+            }
         }, err => {
             console.log(err)
         })
-            // .then(doc => {
-            //     if (!doc.exists) {
-            //         console.log('No such document!');
-            //     } else {
-            //         console.log('Document data:', doc.data().image);
-            //         this.setState({
-            //             image: doc.data().image
-            //         })
-            //     }
-            // })
-            // .catch(err => {
-            //     console.log('Error getting document', err);
-            // });
+        // .then(doc => {
+        //     if (!doc.exists) {
+        //         console.log('No such document!');
+        //     } else {
+        //         console.log('Document data:', doc.data().image);
+        //         this.setState({
+        //             image: doc.data().image
+        //         })
+        //     }
+        // })
+        // .catch(err => {
+        //     console.log('Error getting document', err);
+        // });
     }
 
     render() {
-        console.log(this.props.navigation, 'navigate')
-        console.log(this.state.image, 'imagescreen state')
         return (
             <View style={styles.container}>
-            <View style={styles.container} >
-                {this.state.image && <Image
-                    style={styles.image}
-                    source={{
-                        uri: this.state.image,
-                    }}
-                />}
-            </View>
-                <Header
-                    leftComponent={{ icon: 'home',  color: '#fff' , onPress: () => {this.props.navigation.navigate('Main')}}}
-                    centerComponent={{ text: 'These are your reccommended books', style: {color: '#fff'}}}
-                />
-            
+
+                {this.state.image ?
+                    <View style={styles.container} >
+                        <Image
+                            style={styles.image}
+                            source={{
+                                uri: this.state.image,
+                            }}
+                        />
+                        <Header
+                            leftComponent={{ icon: 'home', color: '#fff', onPress: () => { this.props.navigation.navigate('Main') } }}
+                            centerComponent={{ text: 'These are your recommended books', style: { color: '#fff' } }}
+                        />
+                    </View> :
+                    <View style={styles.container} >
+                        {/* <View style={styles.loader}>
+                            <Bars size={40} color='#FDAAFF' />
+                        </View> */}
+                        <Image 
+                            source={require('../assets/images/bookgif.gif')}
+                            style={styles.image}
+                            />
+                    </View>
+                }
+                {/* <Header
+                    leftComponent={{ icon: 'home', color: '#fff', onPress: () => { this.props.navigation.navigate('Main') } }}
+                    centerComponent={{ text: 'These are your recommended books', style: { color: '#fff' } }}
+                /> */}
+
             </View>
         );
     }
@@ -72,7 +90,10 @@ const styles = StyleSheet.create({
         alignItems: 'stretch'
     },
     image: {
-        flex: 1,
-        // opacity: 0.2
+        flex: 1
+    },
+    loader: {
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 });

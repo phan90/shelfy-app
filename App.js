@@ -26,9 +26,9 @@ export default class App extends React.Component {
     const { container } = styles;
     return (
       <View style={container}>
-        <Header
+        {/* <Header
           centerComponent={{ text: 'SHELFY', style: { color: '#fff' } }}
-        />
+        /> */}
         <RootNavigation />
       </View>
     );
