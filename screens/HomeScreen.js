@@ -23,24 +23,21 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        {/* <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}> */}
         <Image
           style={styles.image}
           source={{ uri: firebase.auth().currentUser.photoURL }}
         />
-        <Text>Welcome back {firebase.auth().currentUser.displayName}!
+        <Text style={styles.welcomeText}> Welcome back {firebase.auth().currentUser.displayName}!
           </Text>
-
-        {/* </ScrollView> */}
         <View style={styles.bottom}>
-        <Text style={styles.text}>Take a pic
+          <Text style={styles.text}>Take a picture of a bookshelf to find out your recommended books based on your favourite books.
            </Text>
-        <TouchableOpacity onPress={() => this.takePhoto()}>
-          <Image
-            source={require('../assets/images/camera.png')}
-            style={styles.camera}
-          />
-        </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.takePhoto()}>
+            <Image
+              source={require('../assets/images/camera.png')}
+              style={styles.camera}
+            />
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -79,40 +76,39 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: 80,
-    // justifyContent: 'center',
-    alignItems: 'center'
+    paddingTop: 120,
+    alignItems: 'center',
+    padding: 40
   },
-  // contentContainer: {
-  //   paddingTop: 30,
-  //   justifyContent: 'center',
-  //   alignItems: 'center'
-  // }
   camera: {
     width: 100,
     height: 100
   },
   image: {
-    height: 100,
-    width: 100,
+    height: 120,
+    width: 120,
     borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
 
   },
+  welcomeText: {
+    paddingTop: 30,
+    fontSize: 15,
+    fontWeight: 'bold'
+  },
   text: {
-    // width: '100%',
     height: 140,
     justifyContent: 'center',
     alignItems: 'center',
-    // position: 'absolute',
-    // bottom: 0,
-    fontSize: 20
+    fontSize: 15,
+    textAlign: 'center',
+    fontStyle: 'italic'
   },
   bottom: {
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    bottom: 0,
+    bottom: 30,
   }
 });

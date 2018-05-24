@@ -51,12 +51,10 @@ export default class Login extends React.Component {
                 <Text style={styles.text}>You will need to have a Google Books account to use this app, please sign up
                         <Text style={{ color: 'blue' }}
                         onPress={() => Linking.openURL('https://books.google.co.uk')}> here
-                        </Text>
+                        </Text>.
                 </Text>
             </View>
         );
-
-
     }
 }
 

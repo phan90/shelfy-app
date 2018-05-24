@@ -22,20 +22,6 @@ export default class ImageScreen extends React.Component {
         }, err => {
             console.log(err)
         })
-        // firebase.firestore().collection('response').doc(firebase.auth().currentUser.uid).get()
-        // .then(doc => {
-        //     if (!doc.exists) {
-        //         console.log('No such document!');
-        //     } else {
-        //         console.log('Document data:', doc.data().image);
-        //         this.setState({
-        //             image: doc.data().image
-        //         })
-        //     }
-        // })
-        // .catch(err => {
-        //     console.log('Error getting document', err);
-        // });
     }
 
     render() {
