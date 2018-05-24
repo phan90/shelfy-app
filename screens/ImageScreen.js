@@ -1,29 +1,19 @@
 import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
-import { FileSystem } from 'expo';
 import * as firebase from 'firebase'
 import 'firebase/firestore';
 import ApiKeys from '../config/ApiKeys';
 import { Header } from 'react-native-elements';
-import { Bars } from 'react-native-loader';
 
 export default class ImageScreen extends React.Component {
     state = {
         image: '',
     };
-    // componentDidMount() {
-    //     FileSystem.readDirectoryAsync(FileSystem.documentDirectory + 'photos').then(photos => {
-    //         this.setState({
-    //             photos
-    //         });
-    //     });
-    // }
-    componentDidMount() {
-        firebase.firestore().collection('response').doc(firebase.auth().currentUser.uid).set({ image: '' })
 
-        firebase.firestore().collection('response').doc(firebase.auth().currentUser.uid).onSnapshot(doc => {
-            // console.log(`Recieved doc snapshot: ${doc.data().image}`)
-            console.log(doc.data().image, 'doc data')
+    componentDidMount() {
+        firebase.firestore().collection('response').doc(firebase.auth().currentUser.providerData[0].uid).set({ image: '' })
+        firebase.firestore().collection('response').doc(firebase.auth().currentUser.providerData[0].uid).onSnapshot(doc => {
+            console.log(`Recieved doc snapshot: ${doc.data().image}`)
             if (doc.data().image !== '') {
                 this.setState({
                     image: doc.data().image
@@ -32,6 +22,7 @@ export default class ImageScreen extends React.Component {
         }, err => {
             console.log(err)
         })
+        // firebase.firestore().collection('response').doc(firebase.auth().currentUser.uid).get()
         // .then(doc => {
         //     if (!doc.exists) {
         //         console.log('No such document!');
@@ -50,7 +41,6 @@ export default class ImageScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-
                 {this.state.image ?
                     <View style={styles.container} >
                         <Image
@@ -65,20 +55,12 @@ export default class ImageScreen extends React.Component {
                         />
                     </View> :
                     <View style={styles.container} >
-                        {/* <View style={styles.loader}>
-                            <Bars size={40} color='#FDAAFF' />
-                        </View> */}
-                        <Image 
-                            source={require('../assets/images/bookgif.gif')}
+                        <Image
+                            source={require('../assets/images/loader.gif')}
                             style={styles.image}
-                            />
+                        />
                     </View>
                 }
-                {/* <Header
-                    leftComponent={{ icon: 'home', color: '#fff', onPress: () => { this.props.navigation.navigate('Main') } }}
-                    centerComponent={{ text: 'These are your recommended books', style: { color: '#fff' } }}
-                /> */}
-
             </View>
         );
     }
@@ -91,9 +73,5 @@ const styles = StyleSheet.create({
     },
     image: {
         flex: 1
-    },
-    loader: {
-        alignItems: 'center',
-        justifyContent: 'center'
     }
 });

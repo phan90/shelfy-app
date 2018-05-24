@@ -5,6 +5,7 @@ import * as firebase from 'firebase'
 import ApiKeys from './config/ApiKeys'
 import { Header } from 'react-native-elements'
 
+console.disableYellowBox = true;
 
 export default class App extends React.Component {
   constructor(props) {
