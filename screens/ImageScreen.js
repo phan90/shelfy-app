@@ -11,7 +11,7 @@ export default class ImageScreen extends React.Component {
     };
 
     componentDidMount() {
-        firebase.firestore().collection('response').doc(firebase.auth().currentUser.providerData[0].uid).set({ image: '' })
+        firebase.firestore().collection('response').doc(firebase.auth().currentUser.providerData[0].uid).update({ image: '' })
         firebase.firestore().collection('response').doc(firebase.auth().currentUser.providerData[0].uid).onSnapshot(doc => {
             console.log(`Recieved doc snapshot: ${doc.data().image}`)
             if (doc.data().image !== '') {

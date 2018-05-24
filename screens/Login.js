@@ -21,7 +21,11 @@ export default class Login extends React.Component {
                 firebase.auth().signInAndRetrieveDataWithCredential(credential)
                 const options = { "headers": { "Authorization": `Bearer ${result.accessToken}` }}
                 return axios.get('https://www.googleapis.com/books/v1/mylibrary/bookshelves/0/volumes', options
-            ).then(console.log)
+            ).then(({data}) => {
+                const authors = data.items.reduce((acc, book) => acc.concat(book.volumeInfo.authors), [])
+                console.log(authors)
+                firebase.firestore().collection('response').doc(firebase.auth().currentUser.providerData[0].uid).set({ authors})
+            })
             } else {
                 return { cancelled: true };
             }
@@ -77,10 +81,9 @@ const styles = StyleSheet.create({
     text: {
         width: '100%',
         height: 140,
-        justifyContent: 'center',
-        alignItems: 'center',
         position: 'absolute',
         bottom: 0,
-        fontSize: 15
+        fontSize: 15, 
+        textAlign: 'center',
     },
 });
